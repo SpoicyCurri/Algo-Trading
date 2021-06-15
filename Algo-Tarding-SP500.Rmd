@@ -1,0 +1,30 @@
+---
+title: "Algorithmic Trading with R"
+output: html_notebook
+---
+# Algorithmic Trading with R
+
+https://rstudio-pubs-static.s3.amazonaws.com/363773_2382648d32f748b2a7549816de5ea377.html
+
+```{r libraries}
+library(rvest)
+library(pbapply)
+library(TTR)
+library(dygraphs)
+library(lubridate)
+library(tidyquant)
+library(timetk)
+pacman::p_load(dygraphs,DT)
+```
+
+## Data
+Scrape stock ticker data.
+```{r stock-tickers}
+tq_index_options() # Exchange options
+
+Stock_Ticker_Data <- tidyquant::tq_index("SP500") # SP500 Stock Data
+
+Stock_Quant_Data <- tidyquant::tq_get(Stock_Ticker_Data[1:3,1], get = "stock.prices")
+
+```
+
