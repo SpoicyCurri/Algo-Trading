@@ -1,0 +1,111 @@
+---
+title: "Basic Trading Strategy"
+output: html_notebook
+---
+
+Import Libraries
+```{r}
+library(quantmod)
+library(TTR)
+library(PerformanceAnalytics)
+library(tidyverse)
+```
+Stores data as xts type objects - purpose built for handling time series data. They are matrices with an indexed time component.
+
+```{r}
+getSymbols("AAPL", src = "yahoo", from = "2020-01-01")
+getSymbols("TSLA", src = "yahoo", from = "2020-01-01")
+getSymbols("NFLX", src = "yahoo", from = "2020-01-01")
+```
+```{r charting-stock-prices}
+barChart(AAPL, theme = chartTheme("black"))
+barChart(TSLA, theme = chartTheme("black"))
+barChart(NFLX, theme = chartTheme("black"))
+```
+# Technical Indicators
+
+
+## 1.Simple Moving Average (SMA)
+
+The standard interval of time we are using is 20 daysSMA and 50 days SMA. 
+
+```{r SMA}
+# AAPL
+sma20_aapl <- TTR::SMA(AAPL$AAPL.Close, 20)
+sma50_aapl <- TTR::SMA(AAPL$AAPL.Close, 50)
+
+quantmod::lineChart(AAPL, theme = chartTheme("black"))
+addSMA(n = 20, col = "blue")
+addSMA(n = 50, col = "orange")
+legend("left", col = c("green", "blue", "orange"),
+       legend = c("AAPL", "SMA20", "SMA50"), lty = 1, bty = "n",
+       text.col = "white", cex = 0.8)
+
+# TSLA
+sma20_tsla <- TTR::SMA(TSLA$TSLA.Close, 20)
+sma50_tsla <- TTR::SMA(TSLA$TSLA.Close, 50)
+
+quantmod::lineChart(TSLA, theme = chartTheme("black"))
+addSMA(n = 20, col = "blue")
+addSMA(n = 50, col = "orange")
+legend("left", col = c("green", "blue", "orange"),
+       legend = c("TSLA", "SMA20", "SMA50"), lty = 1, bty = "n",
+       text.col = "white", cex = 0.8)
+
+# NFLX
+sma20_nflx <- TTR::SMA(NFLX$NFLX.Close, 20)
+sma50_nflx <- TTR::SMA(NFLX$NFLX.Close, 50)
+
+quantmod::lineChart(NFLX, theme = chartTheme("black"))
+addSMA(n = 20, col = "blue")
+addSMA(n = 50, col = "orange")
+legend("left", col = c("green", "blue", "orange"),
+       legend = c("NFLX", "SMA20", "SMA50"), lty = 1, bty = "n",
+       text.col = "white", cex = 0.8)
+
+```
+
+## 2.Parabolic Stop and Reverse (SAR)
+
+To calculate we pass on daily High and Low prices of companies along with a given acceleration value
+
+```{r SAR}
+
+sar_aapl <- TTR::SAR(cbind(quantmod::Hi(AAPL), quantmod::Lo(AAPL)), accel = c(0.02, 0.2))
+barChart(AAPL, theme = "black")
+addSAR(accel = c(0.02, 0.2), col = "lightblue")
+
+sar_tsla <- TTR::SAR(cbind(quantmod::Hi(AAPL), quantmod::Lo(AAPL)), accel = c(0.02, 0.2))
+barChart(AAPL, theme = "black")
+addSAR(accel = c(0.02, 0.2), col = "lightblue")
+
+sar_nflx <- TTR::SAR(cbind(quantmod::Hi(AAPL), quantmod::Lo(AAPL)), accel = c(0.02, 0.2))
+barChart(AAPL, theme = "black")
+addSAR(accel = c(0.02, 0.2), col = "lightblue")
+
+```
+
+## 3.Commodity Channel Index (CCI)
+
+```{r CCI}
+
+```
+
+## 4.Rate of Change (ROC)
+
+```{r ROC}
+
+```
+
+## 5.Stochastic Momentum Index (SMI)
+
+```{r SMI}
+
+```
+
+## 6.Williams %R
+
+```{r williamsR}
+
+```
+
